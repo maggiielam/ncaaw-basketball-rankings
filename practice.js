@@ -16,7 +16,7 @@ d3.csv("https://raw.githubusercontent.com/maggiielam/data/main/ncaaw%2022-23%20r
     console.log(data)
 
 
-    const maxHeight = 500, maxWidth = 700, originalCircleSize = 5, barChartWidth = 700
+    const maxHeight = 300, maxWidth = 600, originalCircleSize = 5, barChartWidth = 600
 
     var allGroup = d3.map(data, d => d.Conf)
     allGroup = allGroup.filter((c, index) => {return allGroup.indexOf(c) === index})
@@ -51,6 +51,7 @@ d3.csv("https://raw.githubusercontent.com/maggiielam/data/main/ncaaw%2022-23%20r
         .attr("cy", d => y(d.DRtg))
         .attr("r", originalCircleSize)
         .style("fill", "#7877E6")
+        .style("opacity", '0.7')
 
     //add x axis
     circleGroup1.append("g")
@@ -64,14 +65,14 @@ d3.csv("https://raw.githubusercontent.com/maggiielam/data/main/ncaaw%2022-23%20r
     // axes labels
     svg.append("text")
         .attr("x",430)
-        .attr("y", 600)
+        .attr("y", 400)
         .style("text-anchor", "middle")
         .text("Offensive Rating (Better ----->)");
         
 
     svg.append("text")
         .attr("transform", "rotate(-90)")
-        .attr("x", -400)
+        .attr("x", -300)
         .attr("y", 40)
         .text("Defensive Rating (Better <-----)");
 
@@ -108,7 +109,7 @@ d3.csv("https://raw.githubusercontent.com/maggiielam/data/main/ncaaw%2022-23%20r
 
     let barGroup1 = svg.append('g')
         .attr('class', 'barGroup')
-        .attr('transform', 'translate(' + 100 + ',' + 700 + ')')
+        .attr('transform', 'translate(' + 100 + ',' + 450 + ')')
 
     const xBar = d3.scaleBand()
         .range([0, barChartWidth])
@@ -132,6 +133,7 @@ d3.csv("https://raw.githubusercontent.com/maggiielam/data/main/ncaaw%2022-23%20r
         .attr("height", d => maxHeight - yBar(d.SRS))
         .attr("fill", "#7877E6")
         .attr('opacity', '0.4')
+        .attr('stroke', 'white')
         .style('cursor', 'pointer')
         .on('mouseover', mouseOverFunction)
         .on('mouseout', mouseOutFunction)
@@ -145,14 +147,24 @@ d3.csv("https://raw.githubusercontent.com/maggiielam/data/main/ncaaw%2022-23%20r
         .attr("transform", "translate(-10,0)rotate(-45)")
         .style("text-anchor", "end");
 
-    // add y axis
 
     barGroup1.append("g")
         .call(d3.axisLeft(yBar));
 
+    //bar tooltip
+    let barToolTip = barGroup1.append("text")
+        .attr('x', 0)
+        .attr('y', 0)
+        .style('font-size', 16)
+        .style('fill', 'black')
+        .style('text-anchor', 'middle')
+        .style("visibility", "hidden")
+        .lower();
+
+    // add y axis
     svg.append("text")
         .attr("transform", "rotate(-90)")
-        .attr("x", -1070)
+        .attr("x", -730)
         .attr("y", 30)
         .text("SRS* by conference (Better ----->)");
 
@@ -164,6 +176,14 @@ d3.csv("https://raw.githubusercontent.com/maggiielam/data/main/ncaaw%2022-23%20r
             .text(`${d.School} (${d.Conf}): ORtg: ${d.ORtg} - DRtg: ${d.DRtg}`)
             .attr('x', x(d.ORtg))
             .attr('y', y(d.DRtg) - 10)
+
+        // fix
+        barToolTip
+            .style('visibility', 'visible')
+            .text(`${d.School}: SRS: ${d.SRS}`)
+            .attr('x', 500)
+            .attr('y', 40)
+        console.log(d.Conf)
         //highlighting
 
         myCircles
@@ -193,7 +213,7 @@ d3.csv("https://raw.githubusercontent.com/maggiielam/data/main/ncaaw%2022-23%20r
             .style('opacity', d1 => d1.Conf === d.Conf ? 0.3 : 0.1)
             .style('opacity', d1 => d1.School === d.School ? 0.7 : 0.1)
             .style('stroke', d1 => d1.School === d.School ? 'black' : 'none')
-            .style('stroke-width', d1 => d1.School === d.School ? '2' : '0')
+            .style('stroke-width', d1 => d1.School === d.School ? '2' : '1')
         
             
     }
@@ -204,8 +224,11 @@ d3.csv("https://raw.githubusercontent.com/maggiielam/data/main/ncaaw%2022-23%20r
         circleTooltip
             .style('visibility', 'hidden')
 
+        barToolTip
+            .style('visibilty', 'hidden')
+
         myCircles
-            .style('opacity', 1)
+            .style('opacity', 0.7)
             .attr('r', originalCircleSize)
         xLine.style('visibility', 'hidden')
         yLine.style('visibility', 'hidden')
@@ -213,8 +236,9 @@ d3.csv("https://raw.githubusercontent.com/maggiielam/data/main/ncaaw%2022-23%20r
 
         d3.selectAll('.myBar')
             .style('opacity', 0.4)
-            .style('stroke', 'none')
-            .style('stroke-width', 'none')
+            .style('stroke', 'white')
+            .style('stroke-width', 1)
+            
 
     }
 

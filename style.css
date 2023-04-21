@@ -13,8 +13,8 @@ body {
 
 .selected {
   opacity: 1 ;
-  stroke: black;
-  stroke-width: 2px;
+  stroke: black !important;
+  stroke-width: 2px !important;
 }
 
 
