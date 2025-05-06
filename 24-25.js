@@ -11,7 +11,7 @@ const svg = d3.select("#main")
     .attr("height", height + margin.top + margin.bottom)
 
 
-d3.csv("24-25srs.csv").then(function (data) {
+d3.csv("data/24-25srs.csv").then(function (data) {
 
     console.log(data)
 

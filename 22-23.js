@@ -11,7 +11,7 @@ const svg = d3.select("#main")
     .attr("height", height + margin.top + margin.bottom)
 
 
-d3.csv("https://raw.githubusercontent.com/maggiielam/data/main/ncaaw%2022-23%20ratings.csv").then(function (data) {
+d3.csv("data/22-23srs.csv").then(function (data) {
 
     console.log(data)
 
